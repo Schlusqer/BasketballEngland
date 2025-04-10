@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -22,80 +21,72 @@ public class MyStepdefs {
     private WebDriver driver;
     private String actual;
 
+    private void sendKeys(By by, String text) {
+        (new WebDriverWait(driver, Duration.ofSeconds(5))).
+                until(ExpectedConditions.presenceOfElementLocated(by));
+
+        driver.findElement(by).sendKeys(text);
+    }
 
     @Given("I navigate to the site")
     public void iNavigateToTheSite() {
         System.out.println("Starting...");
-        driver = new EdgeDriver();
+        driver = new FirefoxDriver();
         driver.get("https://membership.basketballengland.co.uk/NewSupporterAccount");
         driver.manage().window().maximize();
     }
 
     @Given("I open a {} and navigate to the site")
     public void iOpenAAndNavigateToTheSite(String browser) {
+        System.out.println("Starting...");
         if(browser.equals("firefox")) {
-            System.out.println("Starting...");
             driver = new FirefoxDriver();
             driver.get("https://membership.basketballengland.co.uk/NewSupporterAccount");
             driver.manage().window().maximize();
 
         } else if(browser.equals("edge")) {
-            System.out.println("Starting...");
             driver = new EdgeDriver();
             driver.get("https://membership.basketballengland.co.uk/NewSupporterAccount");
             driver.manage().window().maximize();
         }
     }
 
-    @Given("I have selected my date of birth {string}")
+    @When("I have selected my date of birth {string}")
     public void iHaveSelectedMyDateOfBirth(String birthday) {
         System.out.println("Filling in fields...");
-        WebElement date = driver.findElement(By.id("dp"));
-        date.sendKeys(birthday);
+        sendKeys(By.id("dp"), birthday);
 
     }
 
     @When("I have entered my name {string}")
     public void iHaveEnteredMyName(String name) {
-        //System.out.println(name);
-        WebElement firstName = driver.findElement(By.name("Forename"));
-        firstName.sendKeys(name);
+        sendKeys(By.name("Forename"),name);
 
     }
 
     @When("I have entered my lastname {string}")
     public void iHaveEnteredMyLastName(String lastname) {
-        //System.out.println(lastname);
-        WebElement surName = driver.findElement(By.name("Surname"));
-        surName.sendKeys(lastname);
+        sendKeys(By.name("Surname"),lastname);
     }
 
     @When("I have entered my email {string}")
     public void iHaveEnteredMyEmail(String firstEmail) {
-        //System.out.println(email);
-        WebElement emailAddress = driver.findElement(By.name("EmailAddress"));
-        emailAddress.sendKeys(firstEmail);
+        sendKeys(By.name("EmailAddress"),firstEmail);
     }
 
     @When("I have confirmed my email {string}")
     public void iHaveConfirmedMyEmail(String secondEmail) {
-        //System.out.println(email);
-        WebElement confirmEmail = driver.findElement(By.name("ConfirmEmailAddress"));
-        confirmEmail.sendKeys(secondEmail);
+        sendKeys(By.name("ConfirmEmailAddress"),secondEmail);
     }
 
     @When("I have entered my password {string}")
     public void iHaveEnteredMyPassword(String firstPassword) {
-        //System.out.println(password);
-        WebElement enterPassword = driver.findElement(By.name("Password"));
-        enterPassword.sendKeys(firstPassword);
+        sendKeys(By.name("Password"),firstPassword);
     }
 
     @When("I have confirmed my password {string}")
     public void iHaveConfirmedMyPassword(String secondPassword) {
-        //System.out.println(password);
-        WebElement samePassword = driver.findElement(By.name("ConfirmPassword"));
-        samePassword.sendKeys(secondPassword);
+        sendKeys(By.name("ConfirmPassword"),secondPassword);
     }
 
     @When("I have checked all boxes")
@@ -130,28 +121,22 @@ public class MyStepdefs {
 
     @When("I enter my {}")
     public void iEnterMy(String lastName) {
-        WebElement surName = driver.findElement(By.name("Surname"));
-        surName.sendKeys(lastName);
+        sendKeys(By.name("Surname"),lastName);
     }
 
     @When("I write my {}")
     public void iWriteMy(String emailAddress) {
-        WebElement email = driver.findElement(By.name("EmailAddress"));
-        email.sendKeys(emailAddress);
-        
+        sendKeys(By.name("EmailAddress"),emailAddress);
     }
 
     @When("I confirm my {}")
     public void iConfirmMy(String secondEmailAddress) {
-        WebElement confirmEmail = driver.findElement(By.name("ConfirmEmailAddress"));
-        confirmEmail.sendKeys(secondEmailAddress);
+        sendKeys(By.name("ConfirmEmailAddress"),secondEmailAddress);
     }
 
     @When("I rewrite {}")
     public void iRewrite(String secondPassword) {
-        WebElement samePassword = driver.findElement(By.name("ConfirmPassword"));
-        samePassword.sendKeys(secondPassword);
-        
+        sendKeys(By.name("ConfirmPassword"),secondPassword);
     }
 
     @When("I check {}")
@@ -198,7 +183,5 @@ public class MyStepdefs {
         assertEquals(expected, actual);
         System.out.println("--DONE--");
     }
-
-
 
 }

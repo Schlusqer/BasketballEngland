@@ -2,7 +2,7 @@ Feature: Registration
 
   Scenario: Successful registration
     Given I navigate to the site
-    Given I have selected my date of birth "05/05/1999"
+    And I have selected my date of birth "05/05/1999"
     * I have entered my name "Linus"
     * I have entered my lastname "Gunnarsson"
     * I have entered my email "12@mail.com"
@@ -15,7 +15,7 @@ Feature: Registration
 
   Scenario Outline: Failed registrations
     Given I open a <browser> and navigate to the site
-    Given I have selected my date of birth "05/05/1999"
+    And I have selected my date of birth "05/05/1999"
     * I have entered my name "Linus"
     * I enter my <lastName>
     * I write my <emailAddress>
