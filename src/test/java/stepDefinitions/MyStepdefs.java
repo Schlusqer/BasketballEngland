@@ -6,6 +6,7 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,6 +19,8 @@ import static org.junit.Assert.assertEquals;
 public class MyStepdefs {
 
     private WebDriver driver;
+    private String actual;
+
 
     @Given("I navigate to the site")
     public void iNavigateToTheSite() {
@@ -105,6 +108,75 @@ public class MyStepdefs {
 
         String expected = "THANK YOU FOR CREATING AN ACCOUNT WITH BASKETBALL ENGLAND";
         assertEquals(expected, actual);
+    }
+
+
+    @When("I enter my {}")
+    public void iEnterMy(String lastName) {
+        WebElement surName = driver.findElement(By.name("Surname"));
+        surName.sendKeys(lastName);
+    }
+
+    @When("I write my {}")
+    public void iWriteMy(String emailAddress) {
+        WebElement email = driver.findElement(By.name("EmailAddress"));
+        email.sendKeys(emailAddress);
+        
+    }
+
+    @When("I confirm my {}")
+    public void iConfirmMy(String secondEmailAddress) {
+        WebElement confirmEmail = driver.findElement(By.name("ConfirmEmailAddress"));
+        confirmEmail.sendKeys(secondEmailAddress);
+    }
+
+    @When("I rewrite {}")
+    public void iRewrite(String secondPassword) {
+        WebElement samePassword = driver.findElement(By.name("ConfirmPassword"));
+        samePassword.sendKeys(secondPassword);
+        
+    }
+
+    @When("I check {}")
+    public void iCheck(String boxes) {
+        if(boxes.equals("all")){
+            System.out.println("Checking ALL boxes...");
+            WebElement tos = driver.findElement(By.cssSelector("label[for='sign_up_25']"));
+            tos.click();
+            WebElement confirmAge = driver.findElement(By.cssSelector("label[for='sign_up_26']"));
+            confirmAge.click();
+            WebElement ethics = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div/div/form/div[11]/div/div[7]/label/span[3]"));
+            ethics.click();
+
+        } else {
+            System.out.println("Checking boxes...");
+            WebElement confirmAge = driver.findElement(By.cssSelector("label[for='sign_up_26']"));
+            confirmAge.click();
+            WebElement ethics = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div/div/form/div[11]/div/div[7]/label/span[3]"));
+            ethics.click();
+        }
+
+    }
+
+    @Then("I get the {} message I {}")
+    public void iGetTheMessage(String error, String expected) {
+
+        if(error.equals("name")) {
+            WebElement errorMessage = driver.findElement(By.cssSelector("span[for='member_lastname']"));
+            actual = errorMessage.getText();
+
+        } else if(error.equals("password")) {
+            WebElement errorMessage = driver.findElement(By.cssSelector("span[for='signupunlicenced_confirmpassword']"));
+            actual = errorMessage.getText();
+
+        } else if(error.equals("ToS")) {
+            WebElement errorMessage = driver.findElement(By.cssSelector("span[for='TermsAccept']"));
+            actual = errorMessage.getText();
+        }
+
+
+        assertEquals(expected, actual);
+        System.out.println("--DONE--");
     }
 
 
