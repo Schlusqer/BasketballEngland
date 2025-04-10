@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,9 +26,25 @@ public class MyStepdefs {
     @Given("I navigate to the site")
     public void iNavigateToTheSite() {
         System.out.println("Starting...");
-        driver = new FirefoxDriver();
+        driver = new EdgeDriver();
         driver.get("https://membership.basketballengland.co.uk/NewSupporterAccount");
         driver.manage().window().maximize();
+    }
+
+    @Given("I open a {} and navigate to the site")
+    public void iOpenAAndNavigateToTheSite(String browser) {
+        if(browser.equals("firefox")) {
+            System.out.println("Starting...");
+            driver = new FirefoxDriver();
+            driver.get("https://membership.basketballengland.co.uk/NewSupporterAccount");
+            driver.manage().window().maximize();
+
+        } else if(browser.equals("edge")) {
+            System.out.println("Starting...");
+            driver = new EdgeDriver();
+            driver.get("https://membership.basketballengland.co.uk/NewSupporterAccount");
+            driver.manage().window().maximize();
+        }
     }
 
     @Given("I have selected my date of birth {string}")
@@ -139,8 +156,11 @@ public class MyStepdefs {
 
     @When("I check {}")
     public void iCheck(String boxes) {
+        Actions actions = new Actions(driver);
         if(boxes.equals("all")){
             System.out.println("Checking ALL boxes...");
+
+            actions.moveByOffset(200, 150).click().perform();
             WebElement tos = driver.findElement(By.cssSelector("label[for='sign_up_25']"));
             tos.click();
             WebElement confirmAge = driver.findElement(By.cssSelector("label[for='sign_up_26']"));
@@ -178,6 +198,7 @@ public class MyStepdefs {
         assertEquals(expected, actual);
         System.out.println("--DONE--");
     }
+
 
 
 }

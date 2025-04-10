@@ -1,9 +1,7 @@
 Feature: Registration
 
-  Background: Navigate to the site
-    Given I navigate to the site
-
   Scenario: Successful registration
+    Given I navigate to the site
     Given I have selected my date of birth "05/05/1999"
     * I have entered my name "Linus"
     * I have entered my lastname "Gunnarsson"
@@ -16,6 +14,7 @@ Feature: Registration
     Then I create my account
 
   Scenario Outline: Failed registrations
+    Given I open a <browser> and navigate to the site
     Given I have selected my date of birth "05/05/1999"
     * I have entered my name "Linus"
     * I enter my <lastName>
@@ -28,7 +27,7 @@ Feature: Registration
     Then I get the <error> message I <expected>
 
     Examples:
-      | lastName   | emailAddress | secondEmailAddress | secondPassword | boxes | error    | expected                                                                  |
-      |            | 123@mail.com | 123@mail.com       | password1      | all   | name     | Last Name is required                                                     |
-      | Gunnarsson | 123@mail.com | 123@mail.com       | password2      | all   | password | Password did not match                                                    |
-      | Gunnarsson | 123@mail.com | 123@mail.com       | password1      | some  | ToS      | You must confirm that you have read and accepted our Terms and Conditions |
+      | lastName   |  | emailAddress | secondEmailAddress | secondPassword | boxes | error    | expected                                                                  | browser |
+      |            |  | 123@mail.com | 123@mail.com       | password1      | all   | name     | Last Name is required                                                     | firefox |
+      | Gunnarsson |  | 123@mail.com | 123@mail.com       | password2      | all   | password | Password did not match                                                    | edge    |
+      | Gunnarsson |  | 123@mail.com | 123@mail.com       | password1      | some  | ToS      | You must confirm that you have read and accepted our Terms and Conditions | edge    |
